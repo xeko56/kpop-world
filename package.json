@@ -5,7 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "start": "ts-node server/index.ts",
-    "build": "tsc && cd client && npm install && npm run build"
+    "build": "tsc server/index.ts && cd client && npm install && npm run build"
   },
   "engines": {
     "node": "16.17.0"
