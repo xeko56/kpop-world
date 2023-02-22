@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "start": "node dist/server/index.js",
-    "build": "cd client && npm install && npm run build"
+    "start": "ts-node server/index.ts",
+    "build": "tsc && cd client && npm install && npm run build"
   },
   "engines": {
     "node": "16.17.0"
