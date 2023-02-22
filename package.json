@@ -4,12 +4,13 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "start": "ts-node server/index.ts",
-    "build": "tsc server/index.ts && cd client && npm install && npm run build"
+    "start": "node server/index.js",
+    "build": "cd client && npm install && npm run build"
   },
   "engines": {
     "node": "16.17.0"
   },
+  "type":"module",
   "keywords": [],
   "author": "",
   "license": "ISC",

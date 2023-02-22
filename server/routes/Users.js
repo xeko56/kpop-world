@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import * as dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import { User } from '../schema/User';
+import {User} from '../schema/User.js';
 
 dotenv.config();
 
