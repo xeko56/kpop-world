@@ -8,7 +8,7 @@ app.use(express.json());
 import userRoutes from './routes/Users';
 app.use('/users', userRoutes);
 
-app.get("/api", (req, res) => {
+app.get("/api", (req:any, res:any) => {
     res.json({ message: "Hello from server!" });
 });
 
@@ -17,6 +17,6 @@ app.listen(PORT, () => {
 });
 
 // All other GET requests not handled before will return our React app
-app.get('*', (req, res) => {
+app.get('*', (req:any, res:any) => {
     res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
 });
