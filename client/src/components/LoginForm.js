@@ -4,16 +4,49 @@ import {
     TextField,
     Container, Grid, Typography, Box
 
-} from '@mui/material'
+} from '@mui/material';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import FormControl from '@mui/material/FormControl';
+import InputAdornment from '@mui/material/InputAdornment';
+import InputLabel from '@mui/material/InputLabel';
+import FilledInput from '@mui/material/FilledInput';
+import IconButton from '@mui/material/IconButton';
 
 function Password({show, onChangedValue}) {
+    const [showPassword, setShowPassword] = React.useState(false);
+
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };    
     return (
         <>
-            <TextField  id="lname" name="passwd" label="Password:" variant="standard" onChange={
-                (event) => {
-                    onChangedValue(event.target.value);
-                }
-            }/>
+            <FormControl sx={{ m: 1, width: '25ch' }} variant="filled">
+                <InputLabel htmlFor="filled-adornment-password">Password</InputLabel>
+                <FilledInput
+                    id="filled-adornment-password"
+                    type={showPassword ? 'text' : 'password'}
+                    endAdornment={
+                    <InputAdornment position="end">
+                        <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                        >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                    </InputAdornment>
+                    }
+                    onChange={
+                        (event) => {
+                            onChangedValue(event.target.value);
+                        }
+                    }                    
+                />
+            </FormControl>            
         </>
     )
 }
@@ -36,9 +69,21 @@ function LoginForm({onSubmit, reEnter}) {
                 Log into your account
                 </Typography>
 
-                <TextField id="fname" label="First name:" variant="standard" name="fname" onChange={(event) => {
+                {/* <TextField id="fname" label="First name:" variant="standard" name="fname" onChange={(event) => {
                     setUsername(event.target.value);
-                }}/>
+                }}/> */}
+                <FormControl sx={{ m: 1, width: '25ch' }} variant="filled">
+                    <InputLabel htmlFor="filled-username">Username</InputLabel>
+                    <FilledInput
+                        id="filled-username"
+                        type={'text'}
+                        onChange={
+                            (event) => {
+                                setUsername(event.target.value);
+                            }
+                        }                    
+                    />
+                </FormControl>                 
                 <Password onChangedValue={setPassword}/>
                 {reEnter ? "Please reenter your password" : ""}
                 {reEnter && <Password onChangedValue={conditionalCheck}/>}

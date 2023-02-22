@@ -27,8 +27,8 @@ function Login() {
             // get the response body (the method explained below)
             let json = await response.json();
             console.log("json", json);
+            sessionStorage.setItem('userData', JSON.stringify(json.data));
             setData(json.data._id);
-
         } else {
             console.log("HTTP-Error: " + response.status);
         }
@@ -45,7 +45,7 @@ function Login() {
         <>
             <Form onSubmit={login}/>
             <br/>
-            {/* TODO */}
+            {/* TODO: Register and info when login failure*/}
             <Link to={"../register"}>Register</Link>
         </>
     )
