@@ -7,6 +7,9 @@ app.use(express.json());
 
 import userRoutes from './routes/Users.js';
 
+// Have Node serve the files for our built React app
+app.use(express.static(path.resolve(__dirname, '../client/build')));
+
 app.use('/users', userRoutes);
 
 app.get("/api", (req, res) => {
