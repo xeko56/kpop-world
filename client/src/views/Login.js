@@ -39,7 +39,7 @@ function Login() {
         if (data.length > 0) {
             navigate("/user");
         }
-    }, [data])
+    }, [data, navigate])
 
     return (
         <>
