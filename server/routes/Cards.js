@@ -6,7 +6,7 @@ const router = Router();
 router.get('/', async (_req, res) => {
     try {
         let conn = await pool.getConnection();
-        let sql = `SELECT card_nr, card_name, era_name, group_name, type_name, release_date FROM cards
+        let sql = `SELECT card_nr, card_name, era_name, group_name, type_name, release_date, img_url FROM cards
                         LEFT JOIN groups USING (group_nr)
                         LEFT JOIN eras USING (era_nr)
                         LEFT JOIN types USING (type_nr)`;
