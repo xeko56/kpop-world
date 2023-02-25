@@ -10,13 +10,18 @@
   "engines": {
     "node": "16.17.0"
   },
-  "type":"module",
+  "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@mui/material": "^5.11.10",
+    "@mui/x-data-grid": "^5.17.25",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "mariadb": "^3.1.0",
     "mongoose": "^6.9.2",
     "ts-node": ">=9.0.0",
     "typescript": "^4.9.5"
