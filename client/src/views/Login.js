@@ -5,6 +5,7 @@ import Form from "../components/LoginForm.js";
 import {Link} from "react-router-dom";
 import {useNavigate} from "react-router-dom";
 
+
 function Login() {
     const navigate = useNavigate();
     const [data, setData] = useState([]);
@@ -44,9 +45,7 @@ function Login() {
     return (
         <>
             <Form onSubmit={login}/>
-            <br/>
             {/* TODO: Register and info when login failure*/}
-            <Link to={"../register"}>Register</Link>
         </>
     )
 

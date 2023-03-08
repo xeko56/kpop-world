@@ -18,3 +18,7 @@ code {
   border-radius: 10px;
   margin-bottom: 1rem;
 }
+
+.min-w-15{
+  min-width: 15rem;
+}

@@ -15,8 +15,7 @@ export const pool = mariadb.createPool({
     database: database,
     port: port, 
     user: username, 
-    password: password,
-    connectionLimit: 100
+    password: password
 });
 
 export function getConnection() {
