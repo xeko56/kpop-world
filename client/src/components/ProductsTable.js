@@ -24,7 +24,7 @@ function ProductTable() {
 
     return (
       <div className="card">
-        <h4 className="align-items-left">Trends</h4>
+        <h4 className="align-items-start">Trends</h4>
         {cards.isFetched? (
           <DataTable value={cards.data?.data} tableStyle={{ minWidth: '50rem' }} removableSort>
             <Column field="card_nr" header="ID" sortable></Column>
