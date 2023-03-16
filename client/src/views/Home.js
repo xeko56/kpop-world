@@ -1,8 +1,7 @@
-import { Typography } from "@mui/material";
 import PrimeMenuBar from "../components/PrimeMenuBar";
 import ProductTable from "../components/ProductsTable";
 import { Messages } from 'primereact/messages';
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function Home() {
     //TODO: rearrange into Grid
@@ -16,13 +15,17 @@ function Home() {
     }, []);
 
     return (
-        <>
-            <Messages ref={msgs} />
-            <PrimeMenuBar/>
+        <div className="grid">
+            <div className = "col-12">
+                <Messages ref={msgs} />
+                <PrimeMenuBar/>
+            </div>
             {/* TODO: Image carousel */}
             {/* TODO: Products type */}
-            <ProductTable/>
-        </>
+            <div class="col-10 col-offset-1">
+                <ProductTable/>
+            </div>
+        </div>
     )
 
 }
