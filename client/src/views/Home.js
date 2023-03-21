@@ -22,7 +22,7 @@ function Home() {
             </div>
             {/* TODO: Image carousel */}
             {/* TODO: Products type */}
-            <div class="col-10 col-offset-1">
+            <div className = "col-10 col-offset-1">
                 <ProductTable/>
             </div>
         </div>

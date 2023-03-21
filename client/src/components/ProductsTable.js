@@ -6,9 +6,15 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Card } from 'primereact/card';
 import { SelectButton } from 'primereact/selectbutton';
+import { Image } from 'primereact/image';
 
 function ProductTable() {
-    const [value, setValue] = useState(null);
+    const [viewValue, setViewValue] = useState(null);
+
+    useEffect(() => {
+      console.log("test", viewValue);
+    }, [viewValue]);
+
     const viewOptions = [
         {icon: 'pi pi-list', value: 'list', name: 'List View'},
         {icon: 'pi pi-th-large', value: 'grid', name: 'Grid View'}
@@ -40,19 +46,42 @@ function ProductTable() {
             <h4 className="">Trends</h4>
           </div>
           <div className="flex flex-wrap justify-content-end gap-3">
-                <SelectButton value={value} onChange={(e) => setValue(e.value)} options={viewOptions} optionLabel="name" itemTemplate={viewOptionsTemplate}/>
+                <SelectButton value={viewValue} onChange={(e) => {
+                    setViewValue(e.value);}
+                  } 
+                  options={viewOptions} optionLabel="name" itemTemplate={viewOptionsTemplate}/>
           </div>          
         </div>
         {cards.isFetched? (
-          <DataTable value={cards.data?.data} tableStyle={{ minWidth: '50rem' }} showGridlines removableSort>
-            <Column field="card_nr" header="ID" sortable></Column>
-            <Column field="card_name" header="Name" sortable></Column>
-            <Column field="img_url" header="Image" body={imageBodyTemplate}></Column>
-            <Column field="era_name" header="Era" sortable></Column>
-            <Column field="group_name" header="Group" sortable></Column>
-            <Column field="type_name" header="Type" sortable></Column>
-            <Column field="release_date" header="Release date" sortable></Column>
-          </DataTable>
+          <>
+            {
+              viewValue === 'list' ? 
+              (
+                <DataTable value={cards.data?.data} tableStyle={{ minWidth: '50rem' }} showGridlines removableSort>
+                  <Column field="card_nr" header="ID" sortable></Column>
+                  <Column field="card_name" header="Name" sortable></Column>
+                  <Column field="img_url" header="Image" body={imageBodyTemplate}></Column>
+                  <Column field="era_name" header="Era" sortable></Column>
+                  <Column field="group_name" header="Group" sortable></Column>
+                  <Column field="type_name" header="Type" sortable></Column>
+                  <Column field="release_date" header="Release date" sortable></Column>
+                </DataTable>
+              ) : 
+              (
+                <div className="grid">
+                {
+                  cards.data?.data.map(card => {
+                    return ( 
+                      <Card className="col-4" title={card.card_name} key={card.card_nr}>
+                        <Image src={card.img_url} zoomSrc={card.img_url} alt={card.card_name} preview width="240"/>
+                      </Card>
+                    )
+                  })
+                }
+                </div>
+              )
+            }
+          </>
         ) : (
           <CircularProgress />
         )}      
