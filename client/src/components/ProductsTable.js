@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Alert, Box, CircularProgress } from "@mui/material";
+import { ProgressSpinner } from 'primereact/progressspinner';
 import { useQuery } from '@tanstack/react-query'
 import { ErrorAlert } from "./ErrorAlert";
 import { DataTable } from 'primereact/datatable';
@@ -9,21 +9,33 @@ import { SelectButton } from 'primereact/selectbutton';
 import { Image } from 'primereact/image';
 
 function ProductTable() {
-    const [viewValue, setViewValue] = useState(null);
+    const [viewValue, setViewValue] = useState('list');
+    const [selectedCell, setSelectedCell] = useState(null);
 
     useEffect(() => {
       console.log("test", viewValue);
     }, [viewValue]);
 
+    // Option to change view
     const viewOptions = [
         {icon: 'pi pi-list', value: 'list', name: 'List View'},
         {icon: 'pi pi-th-large', value: 'grid', name: 'Grid View'}
     ];
+
     const viewOptionsTemplate = (option) => {
         return <i className={option.icon}></i>;
     }    
 
-  // TODO: add filter & sorting for Datatable
+    // Event on Cell click
+    const onCellSelect = (event) => {
+      console.log("event", event);
+      if (event.field === "card_name") {
+        let card_nr = event.rowData.card_nr;
+        window.open(`/card/${card_nr}`,'_blank');
+      }
+    };
+
+    // TODO: add filter & sorting for Datatable
     const cards = useQuery(['cards'], async () => {
       const res = await fetch("/cards");
       return res.json();       
@@ -57,7 +69,16 @@ function ProductTable() {
             {
               viewValue === 'list' ? 
               (
-                <DataTable value={cards.data?.data} tableStyle={{ minWidth: '50rem' }} showGridlines removableSort>
+                <DataTable value={cards.data?.data}
+                  cellSelection 
+                  selectionMode="single" 
+                  selection={selectedCell} 
+                  tableStyle={{ minWidth: '50rem' }} 
+                  showGridlines
+                  removableSort
+                  onSelectionChange={(e) => setSelectedCell(e.value)}
+                  onCellSelect={onCellSelect}
+                >
                   <Column field="card_nr" header="ID" sortable></Column>
                   <Column field="card_name" header="Name" sortable></Column>
                   <Column field="img_url" header="Image" body={imageBodyTemplate}></Column>
@@ -83,7 +104,7 @@ function ProductTable() {
             }
           </>
         ) : (
-          <CircularProgress />
+          <ProgressSpinner />
         )}      
     </div>
     );

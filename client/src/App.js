@@ -2,6 +2,7 @@ import React from "react";
 import './App.css';
 import Login from "./views/Login";
 import Home from "./views/Home";
+import ProductDetails from "./views/ProductDetails";
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import "primereact/resources/themes/lara-light-purple/theme.css" // theme
@@ -26,6 +27,8 @@ function App() {
               <Route path="/" element={<Login />}>
               </Route>
               <Route path="/user" element={<Home />}>
+              </Route>
+              <Route path="/card/:card_nr" element={<ProductDetails />}>
               </Route>
             </Routes>
           </BrowserRouter>

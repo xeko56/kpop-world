@@ -6,6 +6,7 @@ function PrimeMenuBar() {
     const items = [
         {
             label: 'Home',
+            url: '/user'
         },         
         {
             label: 'Boygroups',
