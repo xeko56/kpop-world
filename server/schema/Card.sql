@@ -136,3 +136,101 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2023-03-22 13:39:09
+
+DROP TABLE IF EXISTS `sale_cards`;
+
+CREATE TABLE `sale_cards`(
+	`sale_card_id` int(11) NOT NULL AUTO_INCREMENT,
+	`user_nr` int(11) NOT NULL,
+	`card_nr` int(11) NOT NULL,
+	`price` float NOT NULL,
+	`amount` int NOT NULL,
+	`status` int(11) NOT NULL,
+	`e_date` date NOT NULL,
+	`is_soldout` boolean,
+	PRIMARY KEY (`sale_card_id`),
+	KEY `user_nr`(`user_nr`),
+	KEY `card_nr`(`card_nr`),
+	CONSTRAINT `sale_cards_ibfk_1` FOREIGN KEY (`user_nr`) REFERENCES `users` (`user_nr`),
+  	CONSTRAINT `sale_cards_ibfk_2` FOREIGN KEY (`card_nr`) REFERENCES `cards` (`card_nr`),
+)
+
+ALTER TABLE `sale_cards` 
+ADD CONSTRAINT `sale_cards_ibfk_3`
+FOREIGN KEY (`status`) REFERENCES `card_status` (`status_nr`);
+
+-- Dumping data for table `sale_cards`
+
+LOCK TABLES `sale_cards` WRITE;
+
+INSERT INTO `sale_cards` VALUES (1, 1, 2, 29.99, 3, 'NM', '2023-03-22', false), (2, 2, 3, 19.99, 2, 'M', '2023-03-14', false);
+
+UNLOCK TABLES; 
+
+-----------------------------------------------------------------------
+DROP TABLE IF EXISTS `buy_cards`;
+
+CREATE TABLE `buy_cards`(
+	`buy_card_id` int(11) NOT NULL AUTO_INCREMENT,
+	`user_nr` int(11) NOT NULL,
+	`sale_card_id` int(11) NOT NULL,
+	`amount` int NOT NULL,
+	`status` ENUM('M', 'NM', 'EX', 'GD', 'LP', 'PL', 'PO') NOT NULL,
+	`e_date` date NOT NULL,
+	`is_paid` boolean,
+	PRIMARY KEY (`buy_card_id`),
+	KEY `user_nr`(`user_nr`),
+	KEY `sale_card_id`(`sale_card_id`),
+	CONSTRAINT `buy_cards_ibfk_1` FOREIGN KEY (`user_nr`) REFERENCES `users` (`user_nr`),
+  	CONSTRAINT `buy_cards_ibfk_2` FOREIGN KEY (`sale_card_id`) REFERENCES `sale_cards` (`sale_card_id`)
+)
+
+-- Dumping data for table `buy_cards`
+
+LOCK TABLES `buy_cards` WRITE;
+
+INSERT INTO `buy_cards` VALUES (1, 1, 2, 1, 'M', '2023-04-22', true), (2, 2, 1, 3, 'GD', '2023-06-14', false);
+
+UNLOCK TABLES; 
+
+-----------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `users`;
+
+CREATE TABLE `users`(
+	`user_nr` int(11) NOT NULL AUTO_INCREMENT,
+	`firstname` varchar(255) NOT NULL,
+	`lastname` varchar(255) NOT NULL,
+	`email` varchar(255) NOT NULL,
+	`username` varchar(255) NOT NULL,
+	`user_password` varchar(255) NOT NULL,
+	PRIMARY KEY (`user_nr`)
+)
+
+-- Dumping data for table `users`
+
+LOCK TABLES `users` WRITE;
+
+INSERT INTO `users` VALUES ( 1, 'Tan', 'Nguyen', 'tanpro123@gmail.com', 'n.tan', 'TSnumber1'), ( 2, 'Quoc Anh', 'Luu', 'lbank999@gmail.com', 'l.bank', 'Hanniismywaifu');
+
+UNLOCK TABLES;
+
+-----------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `card_status`;
+
+CREATE TABLE `card_status` (
+  `status_nr` int(11) NOT NULL AUTO_INCREMENT,
+  `status_name` varchar(255) NOT NULL,
+  `status_abbre` varchar(20) NOT NULL,
+  PRIMARY KEY (`status_nr`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Dumping data for table `card_status`
+
+LOCK TABLES `card_status` WRITE;
+
+INSERT INTO `card_status` VALUES (1, 'Mint', 'M'), (2, 'Near Mint', 'NM'), (3, 'Excellent', 'EX'), (4, 'Good', 'GD'), (5, 'Light Played', 'LP'), (6, 'Played', 'PL'), (7, 'Poor', 'PO');
+
+UNLOCK TABLES;
+
