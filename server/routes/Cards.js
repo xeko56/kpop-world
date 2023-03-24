@@ -17,6 +17,18 @@ router.get('/', async (_req, res) => {
                         LEFT JOIN eras USING (era_nr)
                         LEFT JOIN types USING (type_nr)
                       WHERE group_nr = ${_req.query.group_nr}`;
+        } else if (_req.query.era_nr) {
+          sql = `SELECT card_nr, card_name, era_name, group_name, type_name, release_date, img_url FROM cards
+                        LEFT JOIN groups USING (group_nr)
+                        LEFT JOIN eras USING (era_nr)
+                        LEFT JOIN types USING (type_nr)
+                      WHERE era_nr = ${_req.query.era_nr}`;
+        } else if (_req.query.type_nr) {
+          sql = `SELECT card_nr, card_name, era_name, group_name, type_name, release_date, img_url FROM cards
+                        LEFT JOIN groups USING (group_nr)
+                        LEFT JOIN eras USING (era_nr)
+                        LEFT JOIN types USING (type_nr)
+                      WHERE type_nr = ${_req.query.type_nr}`;
         }
         const rows = await conn.query(sql);
         conn.end();
