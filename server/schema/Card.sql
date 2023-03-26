@@ -16,6 +16,64 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `buy_cards`
+--
+
+DROP TABLE IF EXISTS `buy_cards`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `buy_cards` (
+  `buy_card_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_nr` int(11) NOT NULL,
+  `id` int(11) NOT NULL,
+  `amount` int(11) NOT NULL,
+  `status` enum('M','NM','EX','GD','LP','PL','PO') NOT NULL,
+  `e_date` date NOT NULL,
+  `is_paid` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`buy_card_id`),
+  KEY `user_nr` (`user_nr`),
+  KEY `id` (`id`),
+  CONSTRAINT `buy_cards_ibfk_1` FOREIGN KEY (`user_nr`) REFERENCES `users` (`user_nr`),
+  CONSTRAINT `buy_cards_ibfk_2` FOREIGN KEY (`id`) REFERENCES `sale_cards` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `buy_cards`
+--
+
+LOCK TABLES `buy_cards` WRITE;
+/*!40000 ALTER TABLE `buy_cards` DISABLE KEYS */;
+INSERT INTO `buy_cards` VALUES (1,1,2,1,'M','2023-04-22',1),(2,2,1,3,'GD','2023-06-14',0);
+/*!40000 ALTER TABLE `buy_cards` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `card_status`
+--
+
+DROP TABLE IF EXISTS `card_status`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `card_status` (
+  `status_nr` int(11) NOT NULL AUTO_INCREMENT,
+  `status_name` varchar(255) NOT NULL,
+  `status_abbre` varchar(20) NOT NULL,
+  PRIMARY KEY (`status_nr`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `card_status`
+--
+
+LOCK TABLES `card_status` WRITE;
+/*!40000 ALTER TABLE `card_status` DISABLE KEYS */;
+INSERT INTO `card_status` VALUES (1,'Mint','M'),(2,'Near Mint','NM'),(3,'Excellent','EX'),(4,'Good','GD'),(5,'Light Played','LP'),(6,'Played','PL'),(7,'Poor','PO');
+/*!40000 ALTER TABLE `card_status` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `cards`
 --
 
@@ -99,6 +157,42 @@ INSERT INTO `groups` VALUES (1,'ATEEZ'),(2,'BTS'),(3,'NCT127'),(4,'Blackpink'),(
 UNLOCK TABLES;
 
 --
+-- Table structure for table `sale_cards`
+--
+
+DROP TABLE IF EXISTS `sale_cards`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sale_cards` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_nr` int(11) NOT NULL,
+  `card_nr` int(11) NOT NULL,
+  `price` float NOT NULL,
+  `amount` int(11) NOT NULL,
+  `status` int(11) NOT NULL,
+  `e_date` date NOT NULL,
+  `is_soldout` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `sale_cards_ibfk_1` (`user_nr`),
+  KEY `sale_cards_ibfk_2` (`card_nr`),
+  KEY `sale_cards_ibfk_3` (`status`),
+  CONSTRAINT `sale_cards_ibfk_1` FOREIGN KEY (`user_nr`) REFERENCES `users` (`user_nr`),
+  CONSTRAINT `sale_cards_ibfk_2` FOREIGN KEY (`card_nr`) REFERENCES `cards` (`card_nr`),
+  CONSTRAINT `sale_cards_ibfk_3` FOREIGN KEY (`status`) REFERENCES `card_status` (`status_nr`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sale_cards`
+--
+
+LOCK TABLES `sale_cards` WRITE;
+/*!40000 ALTER TABLE `sale_cards` DISABLE KEYS */;
+INSERT INTO `sale_cards` VALUES (1,1,2,29.99,3,1,'2023-03-22',0),(2,2,3,19.99,2,2,'2023-03-14',0),(3,3,4,10,1,1,'2023-03-26',0),(4,3,5,10,1,3,'2023-03-26',0),(5,3,6,10,1,3,'2023-03-26',0),(6,1,6,10,1,2,'2023-03-26',0),(7,2,6,10,1,1,'2023-03-26',0);
+/*!40000 ALTER TABLE `sale_cards` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `types`
 --
 
@@ -123,6 +217,34 @@ INSERT INTO `types` VALUES (1,'album'),(2,'pob'),(3,'lucky draw'),(4,'fancall'),
 UNLOCK TABLES;
 
 --
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `users` (
+  `user_nr` int(11) NOT NULL AUTO_INCREMENT,
+  `firstname` varchar(255) NOT NULL,
+  `lastname` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `user_password` varchar(255) NOT NULL,
+  PRIMARY KEY (`user_nr`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'Tan','Nguyen','tanmatic.tm@gmail.com','n.tan','TSnumber1'),(2,'Quoc Anh','Luu','lbank999@gmail.com','l.bank','Hanniismywaifu'),(3,'Max','Mustermann','maxmusterman@gmail.com','entwicklung','123');
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Dumping routines for database 'nnguy001'
 --
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -135,102 +257,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-03-22 13:39:09
-
-DROP TABLE IF EXISTS `sale_cards`;
-
-CREATE TABLE `sale_cards`(
-	`sale_card_id` int(11) NOT NULL AUTO_INCREMENT,
-	`user_nr` int(11) NOT NULL,
-	`card_nr` int(11) NOT NULL,
-	`price` float NOT NULL,
-	`amount` int NOT NULL,
-	`status` int(11) NOT NULL,
-	`e_date` date NOT NULL,
-	`is_soldout` boolean,
-	PRIMARY KEY (`sale_card_id`),
-	KEY `user_nr`(`user_nr`),
-	KEY `card_nr`(`card_nr`),
-	CONSTRAINT `sale_cards_ibfk_1` FOREIGN KEY (`user_nr`) REFERENCES `users` (`user_nr`),
-  	CONSTRAINT `sale_cards_ibfk_2` FOREIGN KEY (`card_nr`) REFERENCES `cards` (`card_nr`),
-)
-
-ALTER TABLE `sale_cards` 
-ADD CONSTRAINT `sale_cards_ibfk_3`
-FOREIGN KEY (`status`) REFERENCES `card_status` (`status_nr`);
-
--- Dumping data for table `sale_cards`
-
-LOCK TABLES `sale_cards` WRITE;
-
-INSERT INTO `sale_cards` VALUES (1, 1, 2, 29.99, 3, 'NM', '2023-03-22', false), (2, 2, 3, 19.99, 2, 'M', '2023-03-14', false);
-
-UNLOCK TABLES; 
-
------------------------------------------------------------------------
-DROP TABLE IF EXISTS `buy_cards`;
-
-CREATE TABLE `buy_cards`(
-	`buy_card_id` int(11) NOT NULL AUTO_INCREMENT,
-	`user_nr` int(11) NOT NULL,
-	`sale_card_id` int(11) NOT NULL,
-	`amount` int NOT NULL,
-	`status` ENUM('M', 'NM', 'EX', 'GD', 'LP', 'PL', 'PO') NOT NULL,
-	`e_date` date NOT NULL,
-	`is_paid` boolean,
-	PRIMARY KEY (`buy_card_id`),
-	KEY `user_nr`(`user_nr`),
-	KEY `sale_card_id`(`sale_card_id`),
-	CONSTRAINT `buy_cards_ibfk_1` FOREIGN KEY (`user_nr`) REFERENCES `users` (`user_nr`),
-  	CONSTRAINT `buy_cards_ibfk_2` FOREIGN KEY (`sale_card_id`) REFERENCES `sale_cards` (`sale_card_id`)
-)
-
--- Dumping data for table `buy_cards`
-
-LOCK TABLES `buy_cards` WRITE;
-
-INSERT INTO `buy_cards` VALUES (1, 1, 2, 1, 'M', '2023-04-22', true), (2, 2, 1, 3, 'GD', '2023-06-14', false);
-
-UNLOCK TABLES; 
-
------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `users`;
-
-CREATE TABLE `users`(
-	`user_nr` int(11) NOT NULL AUTO_INCREMENT,
-	`firstname` varchar(255) NOT NULL,
-	`lastname` varchar(255) NOT NULL,
-	`email` varchar(255) NOT NULL,
-	`username` varchar(255) NOT NULL,
-	`user_password` varchar(255) NOT NULL,
-	PRIMARY KEY (`user_nr`)
-)
-
--- Dumping data for table `users`
-
-LOCK TABLES `users` WRITE;
-
-INSERT INTO `users` VALUES ( 1, 'Tan', 'Nguyen', 'tanpro123@gmail.com', 'n.tan', 'TSnumber1'), ( 2, 'Quoc Anh', 'Luu', 'lbank999@gmail.com', 'l.bank', 'Hanniismywaifu');
-
-UNLOCK TABLES;
-
------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `card_status`;
-
-CREATE TABLE `card_status` (
-  `status_nr` int(11) NOT NULL AUTO_INCREMENT,
-  `status_name` varchar(255) NOT NULL,
-  `status_abbre` varchar(20) NOT NULL,
-  PRIMARY KEY (`status_nr`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- Dumping data for table `card_status`
-
-LOCK TABLES `card_status` WRITE;
-
-INSERT INTO `card_status` VALUES (1, 'Mint', 'M'), (2, 'Near Mint', 'NM'), (3, 'Excellent', 'EX'), (4, 'Good', 'GD'), (5, 'Light Played', 'LP'), (6, 'Played', 'PL'), (7, 'Poor', 'PO');
-
-UNLOCK TABLES;
-
+-- Dump completed on 2023-03-27  0:07:24

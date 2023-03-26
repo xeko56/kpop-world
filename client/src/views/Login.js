@@ -7,7 +7,7 @@ import {useNavigate} from "react-router-dom";
 
 function Login() {
     const navigate = useNavigate();
-    const [data, setData] = useState([]);
+    const [data, setData] = useState(null);
 
     async function login(username, password) {
         const body = {
@@ -27,8 +27,8 @@ function Login() {
             // get the response body (the method explained below)
             let json = await response.json();
             console.log("json", json);
-            sessionStorage.setItem('userData', JSON.stringify(json.data));
-            setData(json.data._id);
+            sessionStorage.setItem('userData', JSON.stringify(json.data[0]));
+            setData(json.data[0].user_nr);
         } else {
             console.log("HTTP-Error: " + response.status);
         }
@@ -36,7 +36,7 @@ function Login() {
 
     useEffect(() => {
         console.log( "data", data);
-        if (data.length > 0) {
+        if (data) {
             navigate("/user");
         }
     }, [data, navigate])
