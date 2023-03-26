@@ -169,16 +169,16 @@ CREATE TABLE `sale_cards` (
   `card_nr` int(11) NOT NULL,
   `price` float NOT NULL,
   `amount` int(11) NOT NULL,
-  `status` int(11) NOT NULL,
+  `status_nr` int(11) DEFAULT NULL,
   `e_date` date NOT NULL,
   `is_soldout` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `sale_cards_ibfk_1` (`user_nr`),
   KEY `sale_cards_ibfk_2` (`card_nr`),
-  KEY `sale_cards_ibfk_3` (`status`),
+  KEY `sale_cards_ibfk_3` (`status_nr`),
   CONSTRAINT `sale_cards_ibfk_1` FOREIGN KEY (`user_nr`) REFERENCES `users` (`user_nr`),
   CONSTRAINT `sale_cards_ibfk_2` FOREIGN KEY (`card_nr`) REFERENCES `cards` (`card_nr`),
-  CONSTRAINT `sale_cards_ibfk_3` FOREIGN KEY (`status`) REFERENCES `card_status` (`status_nr`)
+  CONSTRAINT `sale_cards_ibfk_3` FOREIGN KEY (`status_nr`) REFERENCES `card_status` (`status_nr`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -231,7 +231,7 @@ CREATE TABLE `users` (
   `username` varchar(255) NOT NULL,
   `user_password` varchar(255) NOT NULL,
   PRIMARY KEY (`user_nr`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -240,7 +240,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Tan','Nguyen','tanmatic.tm@gmail.com','n.tan','TSnumber1'),(2,'Quoc Anh','Luu','lbank999@gmail.com','l.bank','Hanniismywaifu'),(3,'Max','Mustermann','maxmusterman@gmail.com','entwicklung','123');
+INSERT INTO `users` VALUES (1,'Tan','Nguyen','tanmatic.tm@gmail.com','n.tan','TSnumber1'),(2,'Quoc Anh','Luu','lbank999@gmail.com','l.bank','Hanniismywaifu'),(3,'Max','Mustermann','maxmusterman@gmail.com','entwicklung','123'),(4,'abc','xyz','zzz','entwicklung1','123');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -257,4 +257,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-03-27  0:07:24
+-- Dump completed on 2023-03-27  1:22:31
