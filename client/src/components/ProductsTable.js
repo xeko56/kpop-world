@@ -92,10 +92,12 @@ function ProductTable() {
                 <div className="grid">
                 {
                   cards.data?.data.map(card => {
-                    return ( 
-                      <Card className="col-4" title={card.card_name} key={card.card_nr}>
-                        <Image src={card.img_url} zoomSrc={card.img_url} alt={card.card_name} preview width="240"/>
-                      </Card>
+                    return (
+                      <div className="col-12 md:col-6 xl:col-4"> 
+                        <Card style={{height: "500px"}} title={card.card_name} key={card.card_nr}>
+                          <Image src={card.img_url} zoomSrc={card.img_url} alt={card.card_name} preview width="240"/>
+                        </Card>
+                      </div>
                     )
                   })
                 }

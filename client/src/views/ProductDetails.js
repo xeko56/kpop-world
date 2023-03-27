@@ -7,6 +7,7 @@ import { useParams } from 'react-router';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { Image } from 'primereact/image';
 import { TabView, TabPanel } from 'primereact/tabview';
+import SalesTable  from '../components/SalesTable'
 
 function ProductDetails() {
     //TODO: rearrange into Grid
@@ -25,39 +26,48 @@ function ProductDetails() {
         return <ErrorAlert error={cardInfo.error} />;
     }    
     return (
-        <div className="grid">
-            <div className = "col-12">
-                <PrimeMenuBar/>
-            </div>
-            
+        <div className="layout-main-container">
+            <div className="grid">
+                <div className = "col-12">
+                    <PrimeMenuBar/>
+                </div>
+                
                 {cardInfo.isFetched? 
                 (
-                    <div className = "col-12 grid mt-4">
-                        <Card className="col-3 shadow-3 col-offset-c3" title={displayInfo.card_name}>
-                            <Image src={displayInfo.img_url} zoomSrc={displayInfo.img_url} alt={displayInfo.card_name} preview width="240"/>
-                        </Card>
-                        <Card className="col-3 shadow-3 text-left ml-4" title="Product Details">
-                            <p>
-                                <span className="font-semibold">Group: </span>
-                                {displayInfo.group_name}
-                            </p>
-                            <p>
-                                <span className="font-semibold">Era: </span>
-                                {displayInfo.era_name}
-                            </p>
-                            <p>
-                                <span className="font-semibold">Type: </span>
-                                {displayInfo.type_name}
-                            </p>
-                            <p>
-                                <span className="font-semibold">Release Date: </span>
-                                {displayInfo.release_date}
-                            </p>
-                        </Card>
-                    </div>              
+                    <>
+                        <div className = "col-12 xl:col-3">
+                            <div className="card" title={displayInfo.card_name}>
+                                <Image src={displayInfo.img_url} zoomSrc={displayInfo.img_url} alt={displayInfo.card_name} preview width="240"/>
+                            </div>
+                        </div>
+                        <div className="col-12 xl:col-9">
+                            <div className="card" title="Product Details">
+                                <p>
+                                    <span className="font-semibold">Group: </span>
+                                    {displayInfo.group_name}
+                                </p>
+                                <p>
+                                    <span className="font-semibold">Era: </span>
+                                    {displayInfo.era_name}
+                                </p>
+                                <p>
+                                    <span className="font-semibold">Type: </span>
+                                    {displayInfo.type_name}
+                                </p>
+                                <p>
+                                    <span className="font-semibold">Release Date: </span>
+                                    {displayInfo.release_date}
+                                </p>
+                            </div>
+                            <div className="card">
+                                <SalesTable card_nr = {card_nr}/>
+                            </div>                    
+                        </div>                 
+                    </>             
                 ) : (
-                <ProgressSpinner />
-                )}                
+                    <ProgressSpinner />
+                )}                   
+            </div>
         </div>
     )
 

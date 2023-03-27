@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: var(--primary-50);
 }
 
 code {
@@ -14,7 +15,18 @@ code {
 
 .card {
   background: var(--surface-card);
+  border: 1px solid var(--surface-border);
   padding: 2rem;
-  border-radius: 10px;
   margin-bottom: 1rem;
+  box-shadow: var(--card-shadow);
+  border-radius: 12px
+}
+
+.card:last-child {
+  margin-bottom: 0
+}
+
+.layout-main-container {
+  padding: 2rem 2rem 2rem 2rem;
+  transition: margin-left .2s;
 }
