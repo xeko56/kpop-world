@@ -1,4 +1,5 @@
 import express from 'express';
+import cookieParser from 'cookie-parser';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -8,6 +9,7 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
 
 import userRoutes from './routes/Users.js';
 import groupRoutes from './routes/Groups.js';

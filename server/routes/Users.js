@@ -1,7 +1,11 @@
 import { pool } from '../utils/MariaDB.js';
 import { Router } from 'express';
+import bcrypt from "bcrypt";
+import jwt from 'jsonwebtoken';
+import auth from '../middleware/Auth.js';
 
 const router = Router();
+const jwtExpirySeconds = 3600;
 
 router.get('/', async (_req, res) => {
     try {
@@ -26,7 +30,20 @@ router.post('/login', async (req, res) => {
     const exists = await conn.query(sql);
     conn.end();
     if (exists.length) {
-      if (exists[0].user_password == req.body.password) {
+      const user_password = exists[0].user_password;
+      if (await bcrypt.compare(req.body.password, user_password)) {
+
+        // Create token
+        const token = jwt.sign(
+          { credentials: username},
+          process.env.TOKEN_KEY,
+          {
+            expiresIn: jwtExpirySeconds,
+          }
+        );
+        console.log("tokenLogin:", token);
+        res.cookie("token", token, { maxAge: jwtExpirySeconds * 1000 });
+            
         return res.status(200).json({ data: exists});
       } 
       else {
@@ -40,6 +57,10 @@ router.post('/login', async (req, res) => {
   }
 });
 
+router.post('/auth', auth, async (req, res) => {
+	res.send(`Welcome !`);
+});
+
 router.post('/register', async (req, res) => {
   try {
     let conn = await pool.getConnection();
@@ -50,17 +71,38 @@ router.post('/register', async (req, res) => {
     if (exists.length) {
       return res.status(409).json({ error: 'Username already exists.'});
     }
+
+    let encryptedPassword = await bcrypt.hash(req.body.password, 10);
     const newUserInfo = {
       firstname: req.body.firstname,
       lastname: req.body.lastname,
       email: req.body.email,
       username: req.body.username,
-      password: req.body.password,
+      password: encryptedPassword,
     };
     sql = `INSERT INTO users VALUES (NULL, '${newUserInfo.firstname}', '${newUserInfo.lastname}', '${newUserInfo.email}', '${newUserInfo.username}', '${newUserInfo.password}');`
     const newData = await conn.query(sql);
     conn.end();
-    return res.status(200).json({ data: newUserInfo.username });
+
+    // Create token
+    const token = jwt.sign(
+      { credentials: newUserInfo.username},
+      process.env.TOKEN_KEY,
+      {
+        expiresIn: jwtExpirySeconds,
+      }
+    );
+    console.log("token:", token);
+    newUserInfo.token = token;
+    res.cookie(
+      "token", token, 
+      { 
+        maxAge: jwtExpirySeconds * 1000,
+        httpOnly: false
+      }
+    );
+
+    return res.status(200).json({ data: newUserInfo });
   } catch (err) {
     res.status(500).json({ error: 'Something went wrong' });
     throw err;    

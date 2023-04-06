@@ -22,22 +22,37 @@ function Login() {
             },
             body: JSON.stringify(body)
         });
+        console.log('response', response);
 
         if (response.ok) { // if HTTP-status is 200-299
             // get the response body (the method explained below)
-            let json = await response.json();
-            console.log("json", json);
-            sessionStorage.setItem('userData', JSON.stringify(json.data[0]));
-            setData(json.data[0].user_nr);
+            let authResponse = await fetch('/users/auth', {
+                method: 'POST',
+                credentials: "include",
+                headers: {
+                    'accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'x-access-token': ''
+                }
+            });
+            if (authResponse.ok) {
+                let json = await response.json();
+                console.log("json", json.data);
+                sessionStorage.setItem('userData', JSON.stringify(json.data[0]));
+                setData(json.data[0].user_nr);
+            }
+            else {
+                console.log("HTTP-Error: " + authResponse.status );
+            }
         } else {
-            console.log("HTTP-Error: " + response.status);
+            console.log("HTTP-Error: " + response.status );
         }
     }
 
     useEffect(() => {
         console.log( "data", data);
         if (data) {
-            navigate("/user");
+            navigate("/dashboard");
         }
     }, [data, navigate])
 
