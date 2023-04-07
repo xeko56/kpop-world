@@ -10,12 +10,12 @@ router.get('/', async (_req, res) => {
         sql = `SELECT card_nr, card_name, era_name, group_name, type_name, release_date, img_url FROM cards
                         LEFT JOIN groups USING (group_nr)
                         LEFT JOIN eras USING (era_nr)
-                        LEFT JOIN types USING (type_nr)`;      
+                        LEFT JOIN card_types USING (type_nr)`;      
         if(_req.query.group_nr) {
           sql = `SELECT card_nr, card_name, era_name, group_name, type_name, release_date, img_url FROM cards
                         LEFT JOIN groups USING (group_nr)
                         LEFT JOIN eras USING (era_nr)
-                        LEFT JOIN types USING (type_nr)
+                        LEFT JOIN card_types USING (type_nr)
                       WHERE group_nr = ${_req.query.group_nr}`;
         }
         const rows = await conn.query(sql);
@@ -35,7 +35,7 @@ router.get('/:card_nr', async (req, res) => {
     let sql = `SELECT card_nr, card_name, era_name, group_name, type_name, release_date, img_url FROM cards
                     LEFT JOIN groups USING (group_nr)
                     LEFT JOIN eras USING (era_nr)
-                    LEFT JOIN types USING (type_nr)
+                    LEFT JOIN card_types USING (type_nr)
                     WHERE card_nr = ${card_nr}`;
     const rows = await conn.query(sql);
     conn.end();

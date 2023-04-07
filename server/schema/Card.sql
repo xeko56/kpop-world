@@ -74,6 +74,30 @@ INSERT INTO `card_status` VALUES (1,'Mint','M'),(2,'Near Mint','NM'),(3,'Excelle
 UNLOCK TABLES;
 
 --
+-- Table structure for table `card_types`
+--
+
+DROP TABLE IF EXISTS `card_types`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `card_types` (
+  `type_nr` int(11) NOT NULL AUTO_INCREMENT,
+  `type_name` varchar(255) NOT NULL,
+  PRIMARY KEY (`type_nr`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `card_types`
+--
+
+LOCK TABLES `card_types` WRITE;
+/*!40000 ALTER TABLE `card_types` DISABLE KEYS */;
+INSERT INTO `card_types` VALUES (1,'album'),(2,'pob'),(3,'lucky draw'),(4,'fancall'),(5,'fansign'),(6,'broadcast');
+/*!40000 ALTER TABLE `card_types` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `cards`
 --
 
@@ -94,7 +118,7 @@ CREATE TABLE `cards` (
   KEY `type_nr` (`type_nr`),
   CONSTRAINT `cards_ibfk_1` FOREIGN KEY (`era_nr`) REFERENCES `eras` (`era_nr`),
   CONSTRAINT `cards_ibfk_2` FOREIGN KEY (`group_nr`) REFERENCES `groups` (`group_nr`),
-  CONSTRAINT `cards_ibfk_3` FOREIGN KEY (`type_nr`) REFERENCES `types` (`type_nr`)
+  CONSTRAINT `cards_ibfk_3` FOREIGN KEY (`type_nr`) REFERENCES `card_types` (`type_nr`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -133,6 +157,30 @@ INSERT INTO `eras` VALUES (1,'Kill This Love'),(2,'Lovesick Girls'),(3,'O.O'),(4
 UNLOCK TABLES;
 
 --
+-- Table structure for table `group_types`
+--
+
+DROP TABLE IF EXISTS `group_types`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `group_types` (
+  `group_type_id` int(11) NOT NULL AUTO_INCREMENT,
+  `group_type_name` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`group_type_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `group_types`
+--
+
+LOCK TABLES `group_types` WRITE;
+/*!40000 ALTER TABLE `group_types` DISABLE KEYS */;
+INSERT INTO `group_types` VALUES (1,'Girlgroups'),(2,'Boygroups'),(3,'Soloists');
+/*!40000 ALTER TABLE `group_types` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `groups`
 --
 
@@ -142,8 +190,12 @@ DROP TABLE IF EXISTS `groups`;
 CREATE TABLE `groups` (
   `group_nr` int(11) NOT NULL AUTO_INCREMENT,
   `group_name` varchar(255) NOT NULL,
-  PRIMARY KEY (`group_nr`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `active` tinyint(1) DEFAULT 1,
+  `group_type_id` int(11) NOT NULL,
+  PRIMARY KEY (`group_nr`),
+  KEY `groups_FK` (`group_type_id`),
+  CONSTRAINT `groups_FK` FOREIGN KEY (`group_type_id`) REFERENCES `group_types` (`group_type_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -152,7 +204,7 @@ CREATE TABLE `groups` (
 
 LOCK TABLES `groups` WRITE;
 /*!40000 ALTER TABLE `groups` DISABLE KEYS */;
-INSERT INTO `groups` VALUES (1,'ATEEZ'),(2,'BTS'),(3,'NCT127'),(4,'Blackpink'),(5,'NMIXX'),(6,'Red Velvet');
+INSERT INTO `groups` VALUES (1,'ATEEZ',1,2),(2,'BTS',1,2),(3,'NCT127',1,2),(4,'Blackpink',1,1),(5,'NMIXX',1,1),(6,'Red Velvet',1,1),(7,'NewJeans',1,1);
 /*!40000 ALTER TABLE `groups` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -193,30 +245,6 @@ INSERT INTO `sale_cards` VALUES (1,1,2,29.99,3,1,'2023-03-22',0),(2,2,3,19.99,2,
 UNLOCK TABLES;
 
 --
--- Table structure for table `types`
---
-
-DROP TABLE IF EXISTS `types`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `types` (
-  `type_nr` int(11) NOT NULL AUTO_INCREMENT,
-  `type_name` varchar(255) NOT NULL,
-  PRIMARY KEY (`type_nr`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `types`
---
-
-LOCK TABLES `types` WRITE;
-/*!40000 ALTER TABLE `types` DISABLE KEYS */;
-INSERT INTO `types` VALUES (1,'album'),(2,'pob'),(3,'lucky draw'),(4,'fancall'),(5,'fansign'),(6,'broadcast');
-/*!40000 ALTER TABLE `types` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `users`
 --
 
@@ -231,7 +259,7 @@ CREATE TABLE `users` (
   `username` varchar(255) NOT NULL,
   `user_password` varchar(255) NOT NULL,
   PRIMARY KEY (`user_nr`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -240,7 +268,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Tan','Nguyen','tanmatic.tm@gmail.com','n.tan','TSnumber1'),(2,'Quoc Anh','Luu','lbank999@gmail.com','l.bank','Hanniismywaifu'),(3,'Max','Mustermann','maxmusterman@gmail.com','entwicklung','123'),(4,'abc','xyz','zzz','entwicklung1','123');
+INSERT INTO `users` VALUES (1,'Tan','Nguyen','tanmatic.tm@gmail.com','n.tan','TSnumber1'),(2,'Quoc Anh','Luu','lbank999@gmail.com','l.bank','Hanniismywaifu'),(3,'Max','Mustermann','maxmusterman@gmail.com','entwicklung','123'),(4,'abc','xyz','zzz','entwicklung1','123'),(5,'abc','xyz','zzz','test30','$2b$10$n8gQn3y5ay3db3JBgtOLCOfwimQQFkOLbmlZsDs4y9M/jdYhgqoYC'),(6,'Banh','Luu','axc','l.bankpao','$2b$10$hhgmSskJqIAQDI9Wm5SNd./Sg7xPcV6ELN1oMneTzR5DzPBikl.YO');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -257,4 +285,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-03-27  1:22:31
+-- Dump completed on 2023-04-07 17:28:16
